@@ -1,4 +1,5 @@
-struct Registers {
+#[derive(Debug)]
+pub struct Registers {
     a: u8,
     b: u8,
     c: u8,
@@ -14,11 +15,25 @@ const SUBTRACT_FLAG_BYTE_POSITION: u8 = 6;
 const HALF_CARRY_FLAG_BYTE_POSITION: u8 = 5;
 const CARRY_FLAG_BYTE_POSITION: u8 = 4;
 
+#[derive(Debug)]
 struct FlagsRegister {
     zero: bool,
     subtract: bool,
     half_carry: bool,
     carry: bool
+}
+
+impl FlagsRegister {
+
+    // Create a new FlagsRegister with default values
+    pub fn new() -> FlagsRegister {
+        FlagsRegister {
+            zero: false,
+            subtract: false,
+            half_carry: false,
+            carry: false,
+        }
+    }
 }
 
 // Allows us to convert a FlagRegister struct into a u8
@@ -50,6 +65,21 @@ impl std::convert::From<u8> for FlagsRegister {
 
 // Some registers functions
 impl Registers {
+
+    // Create a new Registers struct with default values
+    pub fn new() -> Registers {
+        Registers {
+            a: 0,
+            b: 0,
+            c: 0,
+            d: 0,
+            e: 0,
+            f: FlagsRegister::new(),
+            h: 0,
+            l: 0,
+        }
+    }
+
     // gets the BC, 16 bit register
     fn get_bc(&self) -> u16 {
         (self.b as u16) << 8
@@ -61,5 +91,5 @@ impl Registers {
         self.b = ((value & 0xFF00) >> 8) as u8;
         self.c = (value & 0xFF) as u8;
     }
-} 
+}
   
